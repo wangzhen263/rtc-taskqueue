@@ -79,7 +79,11 @@ module.exports = function(pc, opts) {
   var defaultFail = tq.bind(tq, 'fail');
 
   // look for an sdpfilter function (allow slight mis-spellings)
-  var sdpFilter = (opts || {}).sdpfilter || (opts || {}).sdpFilter;
+  var sdpFilter = null;
+  if ((opts || {}).sdpfilter && (opts || {}).sdpFilter) {
+    sdpFilter = function(sdp) {return (opts || {}).sdpfilter((opts || {}).sdpFilter(sdp));}
+  } else
+    sdpFilter = (opts || {}).sdpfilter || (opts || {}).sdpFilter;
   var alwaysParse = (opts.sdpParseMode === 'always');
 
   // initialise session description and icecandidate objects
